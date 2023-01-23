@@ -331,38 +331,102 @@ window.addEventListener('DOMContentLoaded', () => {
           prev = document.querySelector('.offer__slider-prev'),
           next = document.querySelector('.offer__slider-next'),
           total = document.querySelector('#total'),
-          current = document.querySelector('#current');
-    
-    let slideIndex = 1;
+          current = document.querySelector('#current'),
+          slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+          slidesField = document.querySelector('.offer__slider-inner'),
+          width = window.getComputedStyle(slidesWrapper).width;
 
-    function showSlide(count){
-        if(count > slides.length) slideIndex = 1;
-        if(count < 1) slideIndex = slides.length;
+    let slideIndex = 1,
+        offset = 0;
 
-        slides.forEach(img => img.style.display = 'none');
-
-        slides[slideIndex - 1].style.display = 'block';
-
-        current.textContent = slideIndex < 10 ? '0' + slideIndex: slideIndex; 
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
+    } else {
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
     }
 
+    slidesWrapper.style.overflow = 'hidden';
+    slidesField.style.width = slides.length * 100 + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = 'all 0.5s';
+    slides.forEach(slide => {
+        slide.style.width = width;
+    })
 
-    function setSlideAmount(){
-        const totalAmount = slides.length < 10 ? '0' + slides.length: slides.length; 
+    next.addEventListener('click', () => {
+        if(offset == +width.slice(0, -2) * (slides.length - 1)){
+            offset = 0;
+        } else {
+            offset += +width.slice(0, -2);
+        }
 
-        total.textContent = `${totalAmount}`;
-    }
+        slidesField.style.transform = `translateX(-${offset}px)`;
 
-    setSlideAmount()
-    showSlide(slideIndex);
+        if(slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+
+        if(slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    });
 
     prev.addEventListener('click', () => {
-        slideIndex--;
-        showSlide(slideIndex);
+        if(offset == 0){
+            offset = +width.slice(0, -2) * (slides.length -1);
+        } else {
+            offset -= +width.slice(0, -2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if(slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        if(slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
     });
-    next.addEventListener('click', () => {
-        slideIndex++;
-        showSlide(slideIndex);
-    });
+
+    // function showSlide(count){
+    //     if(count > slides.length) slideIndex = 1;
+    //     if(count < 1) slideIndex = slides.length;
+
+    //     slides.forEach(img => img.style.display = 'none');
+
+    //     slides[slideIndex - 1].style.display = 'block';
+
+    //     current.textContent = slideIndex < 10 ? '0' + slideIndex: slideIndex; 
+    // }
+
+
+    // function setSlideAmount(){
+    //     const totalAmount = slides.length < 10 ? '0' + slides.length: slides.length; 
+
+    //     total.textContent = `${totalAmount}`;
+    // }
+
+    // setSlideAmount()
+    // showSlide(slideIndex);
+
+    // prev.addEventListener('click', () => {
+    //     slideIndex--;
+    //     showSlide(slideIndex);
+    // });
+    // next.addEventListener('click', () => {
+    //     slideIndex++;
+    //     showSlide(slideIndex);
+    // });
 
 });
