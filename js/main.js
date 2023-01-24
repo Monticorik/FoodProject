@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 window.addEventListener('DOMContentLoaded', () => {
     // tabs
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
             'hours': hours,
             'minutes': minutes,
             'seconds': seconds
-        }
+        };
 
     }
 
@@ -162,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
     class MenuCard {
         constructor(src, alt, title, description, price, parentSelector, ...classes){
             this.src = src;
-            this.alt = alt
+            this.alt = alt;
             this.title = title;
             this.description = description;
             this.price = price;
@@ -280,7 +280,7 @@ window.addEventListener('DOMContentLoaded', () => {
             statusMessage.style.cssText = `
                 display: block;
                 margin: 0 auto;
-            `
+            `;
             form.insertAdjacentElement('afterend', statusMessage);
 
             const formData = new FormData(form);
@@ -321,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
             thanksModal.remove();
             prevModalDialog.classList.remove('hide');
             closeModal();
-        }, 4000)
+        }, 4000);
 
     }
 
@@ -347,13 +347,16 @@ window.addEventListener('DOMContentLoaded', () => {
         current.textContent = slideIndex;
     }
 
+
+
     slidesWrapper.style.overflow = 'hidden';
     slidesField.style.width = slides.length * 100 + '%';
     slidesField.style.display = 'flex';
     slidesField.style.transition = 'all 0.5s';
     slides.forEach(slide => {
         slide.style.width = width;
-    })
+    });
+
 
     next.addEventListener('click', () => {
         if(offset == +width.slice(0, -2) * (slides.length - 1)){
@@ -428,5 +431,29 @@ window.addEventListener('DOMContentLoaded', () => {
     //     slideIndex++;
     //     showSlide(slideIndex);
     // });
+
+    // carousel indicators
+
+    const slidesMainBlock = document.querySelector('.offer__slider');
+
+    slidesMainBlock.style.position = 'relative';
+
+    function setSlidesIndicator(){
+        const wrapper = document.createElement('div');
+
+        wrapper.classList.add('carousel-indicators');
+
+        for(let i = 0; i < slides.length; i++){
+            wrapper.innerHTML += `<div data-count = ${i} class="dot"></div>`;
+        }
+
+        slidesMainBlock.append(wrapper);
+
+    }
+
+    setSlidesIndicator();
+
+    const slidesIndicator = slidesMainBlock.querySelector('.carousel-indicators');
+
 
 });
